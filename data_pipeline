@@ -1,0 +1,37 @@
+from kafka import KafkaProducer
+from datetime import datetime
+import time
+import json
+import random
+
+port = 'localhost:20118'
+opensearch = 'data_pipeline'
+
+kafka_producer = KafkaProducer(port, value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+
+users = ['test_1', 'test_2', 'test_4', 'test_5']
+works = ['home', 'action1', 'action2']
+action_buttons = ['clicked' , 'seen', 'recently_visited', 'return_to_home']
+timestamps = datetime.now()
+for i in range(30):
+    user = random.choice(users)
+    work = random.choice(works)
+    action_button = random.choice(action_buttons)
+    timestamp = timestamp.isoformat()
+
+    event = {
+        "user": user,
+        "work": work,
+        "action_button": action_button,
+        "timestamp": timestamp
+  }
+
+kafka_producer.send(opensearch, event)
+print("data was sent: " + {event})
+time.sleep(1)
+
+kafka_producer.flush()
+kafka_producer.close()
+
+
+
