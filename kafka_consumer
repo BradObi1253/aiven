@@ -2,3 +2,10 @@ from kafka import KafkaConsumer
 import json
 
 port = 'localhost:20118'
+opensearch = 'data_pipeline'
+
+consumer = KafkaConsumer(opensearch, port, value_deserializer=lamba x: json.loads(x.decode('utf-8'))
+
+for message in consumer:
+    event = message.value
+    print("message delievered: " + {event})
